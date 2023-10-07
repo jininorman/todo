@@ -1,0 +1,57 @@
+{% extends 'base.html'  %}
+{% block content %}
+
+<div class="container">
+ <div class="row">
+  <div class="col-md-4">
+     <form method="post" class="shadow  p-3 mb-5 bg-body rounded">
+         {% csrf_token %}
+         <div class="form-group">
+ <input  class="form-control" type="text" placeholder="Taskname" name="name" required/></div><br>
+
+         <div class="form-group">
+ <input  class="form-control" type="number" placeholder="priority" name="priority" required></div><br>
+       <div class="form-group">
+ <input  class="form-control" type="date" placeholder="Date" name="date" required></div>
+         <br>
+         <button class="btn btn-primary" type="submit">Add Task</button>
+    </form>
+      <form method="get" action="{% url 'searchdata' %}">
+          {% csrf_token %}
+       <div class="searchh">
+    <input class="form-control me-2" type="search" name="query" placeholder="Search Task...." aria-label="Search">
+      <button class="btn btn-light" type="submit" >Search</button>
+
+      </form>
+</div>
+  </div>
+
+ <div class="col-md-4">
+     {% if task %}
+     <h3>All my tasks</h3>
+     {% endif %}
+
+     <br>
+     <ul>
+         {% for i in task %}
+        <h4>Task to be completed</h4>
+         <div class="card border-primary mb-4" style="max-width: 30rem;">
+           <div class="shadow card">
+               <div class="card-body">
+                   <h5 class="card-header">{{i.name}}</h5>
+                   <p><b>{{i.priority}}</b></p>
+                   <p><b>{{i.date}}</b></p>
+
+                   <a class="btn btn-outline-dark"  href="{% url 'delete' i.id %}">DONE</a>
+                   <a class="btn btn-outline-primary" href="{% url 'update' i.id %}">EDIT &#9998</a>
+               </div>
+           </div>
+         </div>
+            <br>
+{% empty %}
+         <h3>You have no tasks!!</h3>
+            {% endfor %}
+     </ul>
+    </div>
+</div>
+{% endblock %}
